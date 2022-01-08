@@ -778,36 +778,55 @@ describe('EventsService', () => {
         },
       });
 
+      const now = new Date();
+
       await prisma.event.create({
         data: {
           type: EventType.BUG_CAUGHT,
           user_id: firstUser.id,
-          occurred_at: new Date(),
-          points: 5 * highestBugCaughtPoints + 2,
+          occurred_at: new Date(now.valueOf() - 1000),
+          points: highestBugCaughtPoints + 2,
+        },
+      });
+      await prisma.event.create({
+        data: {
+          type: EventType.BUG_CAUGHT,
+          user_id: firstUser.id,
+          occurred_at: new Date(now.valueOf() + 1000),
+          points: 0,
         },
       });
       await prisma.event.create({
         data: {
           type: EventType.BUG_CAUGHT,
           user_id: secondUser.id,
-          occurred_at: new Date(),
-          points: 5 * highestBugCaughtPoints + 1,
+          occurred_at: now,
+          points: highestBugCaughtPoints + 2,
+        },
+      });
+
+      await prisma.event.create({
+        data: {
+          type: EventType.COMMUNITY_CONTRIBUTION,
+          user_id: secondUser.id,
+          occurred_at: new Date(now.valueOf() - 1000),
+          points: highestCommunityContributionPoints + 2,
         },
       });
       await prisma.event.create({
         data: {
           type: EventType.COMMUNITY_CONTRIBUTION,
           user_id: secondUser.id,
-          occurred_at: new Date(),
-          points: 5 * highestCommunityContributionPoints + 2,
+          occurred_at: new Date(now.valueOf() + 1000),
+          points: 0,
         },
       });
       await prisma.event.create({
         data: {
           type: EventType.COMMUNITY_CONTRIBUTION,
           user_id: firstUser.id,
-          occurred_at: new Date(),
-          points: 5 * highestCommunityContributionPoints + 1,
+          occurred_at: now,
+          points: highestCommunityContributionPoints + 2,
         },
       });
 
